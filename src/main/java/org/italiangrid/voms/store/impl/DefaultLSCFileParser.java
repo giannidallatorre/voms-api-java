@@ -51,11 +51,11 @@ public class DefaultLSCFileParser implements LSCFileParser {
   public LSCFile parse(String vo, String hostname, String filename) {
 
     LSCFile lsc = null;
+    File f = null;
 
     try {
 
-      File f = new File(filename);
-
+      f = new File(filename);
       checkFileExistanceAndReadabilty(f);
 
       lsc = parse(vo, hostname, new FileInputStream(f));
