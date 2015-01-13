@@ -107,9 +107,13 @@ public class LegacyVOMSESParserImpl implements VOMSESParser {
     if (f.isDirectory())
       return parseDirectory(f);
 
-    try {
+    FileReader fileReader = null;
+    BufferedReader r = null;
 
-      BufferedReader r = new BufferedReader(new FileReader(f));
+    try {
+      fileReader = new FileReader(f);
+      r = new BufferedReader(fileReader);
+
       return parse(r);
 
     } catch (FileNotFoundException e) {
@@ -118,6 +122,16 @@ public class LegacyVOMSESParserImpl implements VOMSESParser {
     } catch (VOMSError e) {
       throw new VOMSError("Error parsing VOMSES file: " + f.getAbsolutePath(),
         e);
+    }
+    finally
+    {
+      try {
+        r.close();
+      } catch(Exception e) {
+        try {
+          fileReader.close();
+        } catch(Exception ee){}
+      }
     }
 
   }
